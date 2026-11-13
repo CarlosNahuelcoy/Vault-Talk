@@ -1,10 +1,10 @@
 {
     "launcher":  {
-                     "version":  "0.1.0",
+                     "version":  "0.1.1",
                      "page":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/latest",
-                     "exe":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/launcher-v0.1.0/VaultTalk.exe",
-                     "sha256":  "bd586ff8192e83c0e70aced9554ee6a56247efd40812c0309bbc4f409187ff50",
-                     "size":  452608
+                     "exe":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/launcher-v0.1.1/VaultTalk.exe",
+                     "sha256":  "feaa975e209ac87de6ebb861e6a609d775b69b3262c13b31b73427ed4f0d2a5b",
+                     "size":  453120
                  },
     "games":  {
                   "fnv":  {
@@ -239,9 +239,9 @@
                                 "page":  "https://store.steampowered.com/app/1946160/Fallout_4_Creation_Kit/"
                             },
                   "xwma":  {
-                               "url":  "",
-                               "size":  0,
-                               "sha256":  "",
+                               "url":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/tools/xWMAEncode.exe",
+                               "size":  684376,
+                               "sha256":  "9e3004476dc47befad3f884d2077f08c7dfd032333d65d979f4cb0b7eaaf5110",
                                "page":  "https://www.microsoft.com/en-us/download/details.aspx?id=6812"
                            }
               }
