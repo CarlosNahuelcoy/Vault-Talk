@@ -1,0 +1,28 @@
+Vault-Talk: third-party tools and material
+
+Vault-Talk is a free fan project. The items below are NOT ours. We do not own them and claim no rights
+over them. They are downloaded or included only to save players the trouble of finding them, and they
+remain the property of their owners. If you are an owner and want something removed, open an issue on
+this repository and it will be taken down.
+
+FaceFXWrapper
+  By Nukem9 (https://github.com/Nukem9/FaceFXWrapper), MIT license for its own code; it uses code from
+  Bethesda's Creation Kit. Vault-Talk downloads it from its author's own release page.
+
+FonixData.cdf
+  Part of Bethesda Softworks' Creation Kit / G.E.C.K. (lip-sync data). Property of Bethesda Softworks LLC.
+  Offered here unchanged, for players who don't have the editor installed.
+
+xWMAEncode.exe
+  Microsoft Corporation's xWMA encoder, from the DirectX SDK (June 2010). Property of Microsoft.
+
+Vault Boy pictures
+  The status faces in the launcher are Fallout: New Vegas' own message icons. Fallout, Vault Boy and
+  Vault-Tec are trademarks of Bethesda Softworks LLC.
+
+Pocket TTS, OmniVoice, omnivoice-server, PyTorch, faster-whisper, Python
+  Installed, when the player asks, from their own official sources (python.org, pypi.org,
+  download.pytorch.org, huggingface.co), under their own licenses.
+
+Player2
+  An optional AI service (https://player2.game). Vault-Talk connects to it with the player's own account.
