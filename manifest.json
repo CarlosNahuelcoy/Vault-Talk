@@ -1,10 +1,10 @@
 {
     "launcher":  {
-                     "version":  "0.1.2",
+                     "version":  "0.1.3",
                      "page":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/latest",
-                     "exe":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/launcher-v0.1.2/VaultTalk.exe",
-                     "sha256":  "4a3392694620e1a8bb291ed2175e5892b9c4a6de84a5b8cebbb201478b772405",
-                     "size":  453120
+                     "exe":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/launcher-v0.1.3/VaultTalk.exe",
+                     "sha256":  "cd768018f365e2835a535ce1e388a50e4cd8729d298263484d56e3f5efd03855",
+                     "size":  470528
                  },
     "games":  {
                   "fnv":  {
@@ -107,14 +107,14 @@
                           },
                   "fo4":  {
                               "mod":  {
-                                          "version":  "0.1",
+                                          "version":  "0.2",
                                           "zip":  "",
-                                          "sha256":  "c4d169ce89be7d7f7a8e81d488c6648676ed326be626f251d21b78ac829eab19",
-                                          "size":  682293,
+                                          "sha256":  "7ab293f105beae3d1819447f50f75e62bba15e685e624baeb7223a824cd67362",
+                                          "size":  714352,
                                           "nexusMod":  0,
                                           "nexusFile":  0,
                                           "files":  {
-                                                        "F4SE/Plugins/SurvivorsCompany.dll":  "619605c129cccd568ec61ec1edd1a63b1233f6dfe8fa8478016464474aee26c1",
+                                                        "F4SE/Plugins/SurvivorsCompany.dll":  "555cde51ab687f202b8699f296f8d5163c1ff48c21dec688cd274a257d3f4784",
                                                         "F4SE/Plugins/SurvivorsCompany/dialogue.py":  "eb0c6f04361bc0b1c558e4c9262f1b406a5da2b43d3cfd195d6c28fb2f1cb2b6",
                                                         "F4SE/Plugins/SurvivorsCompany/engine.py":  "0ba3fc23a5e6fcafddb1e66ba05f6a8d81757565977e630295675e2e5f6c09a8",
                                                         "F4SE/Plugins/SurvivorsCompany/sheets/dlc01robotcompanionfemale.txt":  "81cef2e039ad337efa1dbaa69fc4739922ed0eff69400a6ecaa7566a58dacef4",
@@ -176,14 +176,85 @@
                                                         "F4SE/Plugins/SurvivorsCompany/sheets/npcmvirgil.txt":  "1f13e75202be4b2fd16386da7c15ffd0ecb59010e844c49e6e8afb887904a812",
                                                         "F4SE/Plugins/SurvivorsCompany/sheets/npcmx6-88.txt":  "ad1187eb1bfd159dc29c06314ccbc552c288740d8fdccba2f69fcc76d888db6d",
                                                         "Interface/SurvivorsCompanyInput.swf":  "82dfc28e84af55757db3e8c9c284bd7b9a85965c2befa88951a6667f8307b1b6",
-                                                        "Scripts/SurvivorsCompany.pex":  "773fbd2d9e52a424dae11124a36a6206768305cd19584c6a41e2ee1733c4c3e2",
+                                                        "Scripts/SurvivorsCompany.pex":  "7432071f62c24cd291de4e7d0366db29d967145365c42cd10b2a13c0908a0617",
                                                         "Sound/Voice/SurvivorsCompany.esp/SCVoice/00000803_1.fuz":  "54697ef4664880d9d2d38fdc0f4713cbd877156a19d9141af456bc4f9f9c5431",
                                                         "Sound/Voice/SurvivorsCompany.esp/SCVoice/00000805_1.fuz":  "54697ef4664880d9d2d38fdc0f4713cbd877156a19d9141af456bc4f9f9c5431",
-                                                        "SurvivorsCompany.esp":  "73eeab7eb991c75caa3164153b6f10b3fa50b6764dd2b53d58d60c97095eda49"
+                                                        "Sound/Voice/SurvivorsCompany.esp/SCVoice/00000812_1.fuz":  "54697ef4664880d9d2d38fdc0f4713cbd877156a19d9141af456bc4f9f9c5431",
+                                                        "SurvivorsCompany.esp":  "3971f00f0f58c504ae64ccaeb70a5bf44fc824439710e85abff1e51c8ed6e1d2"
                                                     }
                                       },
                               "history":  [
-
+                                              {
+                                                  "version":  "0.1",
+                                                  "files":  {
+                                                                "F4SE/Plugins/SurvivorsCompany.dll":  "619605c129cccd568ec61ec1edd1a63b1233f6dfe8fa8478016464474aee26c1",
+                                                                "F4SE/Plugins/SurvivorsCompany/dialogue.py":  "eb0c6f04361bc0b1c558e4c9262f1b406a5da2b43d3cfd195d6c28fb2f1cb2b6",
+                                                                "F4SE/Plugins/SurvivorsCompany/engine.py":  "0ba3fc23a5e6fcafddb1e66ba05f6a8d81757565977e630295675e2e5f6c09a8",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc01robotcompanionfemale.txt":  "81cef2e039ad337efa1dbaa69fc4739922ed0eff69400a6ecaa7566a58dacef4",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc01robotcompanionfemaledefault.txt":  "81cef2e039ad337efa1dbaa69fc4739922ed0eff69400a6ecaa7566a58dacef4",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc01robotcompanionfemaleprocessed.txt":  "81cef2e039ad337efa1dbaa69fc4739922ed0eff69400a6ecaa7566a58dacef4",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc01robotcompanionmale.txt":  "81cef2e039ad337efa1dbaa69fc4739922ed0eff69400a6ecaa7566a58dacef4",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc01robotcompanionmaledefault.txt":  "81cef2e039ad337efa1dbaa69fc4739922ed0eff69400a6ecaa7566a58dacef4",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc01robotcompanionmaleprocessed.txt":  "81cef2e039ad337efa1dbaa69fc4739922ed0eff69400a6ecaa7566a58dacef4",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc03coamalehighconfessortektus.txt":  "85c366bf3c01761e2dd97335475439bd38469556f126aaa9aebbbd49a49c491f",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc03femalecaptainavery.txt":  "aefebed30ea4f4d2af7375a78d5b62aa897a9030fb0871b6688a00f47b103914",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc03maledima.txt":  "98b14baba7820d70c4e58b66d1b1e1387d90855a077eee642793ca34b75fedab",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc03maleoldlongfellow.txt":  "8a0b67cb938a983beb08733641ea98faf846b3b2d4006f760d54b3278057dddb",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc04npcfmagsblack.txt":  "b7aca8ecad38705ad5dee99bc8fededb0a0cf7d91eeed51ef04329e10fdabfa8",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc04npcfnisha.txt":  "52060df7aa7ce067499fbce355f380bf4ff78c9075569b86d945371c05b626af",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc04npcmgage.txt":  "b8c0beac01e503dbc3450320360ea63e5b339af50483b89aaf9bfe5d14269bb0",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc04npcmmason.txt":  "9ca0e8dc567963659312cb0c11fa4d42cbf603515c8c74d4e0cedf0ed3c7c802",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/dlc04npcmshank.txt":  "5ae8aa71ed9caec4e0fe1eda3dbfa74c6c6ea69c44a612a2e51c4497944d53a8",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/name_ada.txt":  "bb7d0e56d0ac5bb7ce105c947e49294bf59a289142bc8a8ebbd483840a736d26",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/name_codsworth.txt":  "ec00e2cab56d67f98c7f4ada894b2d31352cf8e945774068eda867a1c95daa55",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/name_nate.txt":  "0051bc975173dbdddba008cd5af8a1e4dae8373e2133bbcfc226dd1214d2b02c",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/name_nora.txt":  "7c7c20052a92301499b91e36c512663f9a76991b058de07b1bac7eadf7e5ec11",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfalliefilmore.txt":  "7865fcf157054233e9bba09cc7c406b6164e834b1add667b100c07ca3aa1e6a9",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfbobbinonose.txt":  "c93bf1c439b898ea347c4cca1eea3bc4c5ac595a5e2c8ed1eb5948b8471c8cce",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfcait.txt":  "2cd6a6e1e42968895d93935cbc6051fed9d34416ccc19ac2b4f2ecd19a40d5cd",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfcurie.txt":  "3e9d9c06be9d06f97479b05ee536bb651b13647b6b93f823c8430012acdbe49d",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfdesdemona.txt":  "21e9cef4a8e8869dd4dea2f17a16e928f4f9135bb9b1bc8b55f17abcc1ccc071",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfdoctoramari.txt":  "a25ff43054582881b714cfd9075be6c66450c102d9c059e390b7f5775952582b",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfglory.txt":  "5fc5e555e6fadbc6c5c96eb622cdb1af90ddaa6017752057c694411596b82f07",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfmadisonli.txt":  "e3340df59975de03818b2bdfab29648ed0523e4925a3a8d5e899328859481385",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfmamamurphy.txt":  "1049e8c724110fb418c30a00342c742f3781beb10ce1b299457f754baf759249",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfpiper.txt":  "18530743c87a068aa032420b7b26ec0e8694789ef671152316fed565a15e4428",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfproctoringram.txt":  "2777a3ad976e5bc795dc64ccd8f6bf21ac1547d300718341e8e7798b1f0bdc84",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfronnieshaw.txt":  "2fe4a7e490c49d4b2a2dd605f1744cca2e8040ff8a900d3604042476b0aeb3a1",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcfscribehaylen.txt":  "d2dd0a1b744de2f05b48ed9d3e3d197f315939a94e99c78b5cbeff56b00a9986",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmdeacon.txt":  "76b1abcc46b3eb03c51c3305449f40ee42ce35105c4ad84c7c9a0c721440e1fe",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmdoctorcarrington.txt":  "59573b76146190ee13fe77d84a7e7c92caf42194d962637b4e14a4be70927bfe",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmedwarddeegan.txt":  "3c660bda2b91bb39ccd6020f884fc2cf75400b448bcf3fd458dea26d562cbeac",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmeldermaxson.txt":  "94c0abce04e1125bc68af243af55381619f31f0389dca32632c57b11a7f2d92a",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmhancock.txt":  "4f76af1c5e587c1ba7ab6823ee5464b236bc8d16fd97902f1996cb39d9b5c420",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmhenrycooke.txt":  "f7e7746047bb355bee97553ae8ac32e0a5f09faaf4dff2bda10c40ca3a8ab2ed",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmjackcabot.txt":  "124839800914d31467b6c861448d8b9391cd5948f9d4ed818d606db1cc42378a",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmjustinayo.txt":  "109c83f4b6dca2c0b9a6aba18bce4f29c3dd05d11c098b37afb8e3665367dcfb",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmkentconnolly.txt":  "6258342d5228aa434d4315c245ae6d40a281ec2a0f2c73c244af7763f5158169",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmknightrhys.txt":  "aa036ca52c93a77c67655e9bdee08838e332f273d6b4a7c52df435b7fc87f766",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmlancercaptainkells.txt":  "07ce3a44a3c5d02423ca5851ff360bb47d293942371bf5bdf9cceae5c14bbccf",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmmaccready.txt":  "95a451e034d1bb586d370737b45ba926c3df43a05f0f9249db055caab8cce274",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmnickvalentine.txt":  "435b514110428136b01b37ed67d72dfd14f5e01a1042402c11b1036bfbdff2da",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmoldlongfellow.txt":  "6a626582107a3ae69f1de586a2cf3aab80e7751286d2728f67ef9ea2a9c0fa5b",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmpaladindanse.txt":  "d615427b90860cfa22690015057a857359e791ec8689d0f89611b45e592440e7",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmpaulpembroke.txt":  "9d4c5a0978c49ba25cea0f51e6e1903798fe2cafab27bc7e14c98e23e33e1fdc",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmprestongarvey.txt":  "0e80ab4aa6d85587576379a67ec811935db9276e0df412740f0121dc88edf063",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmproctorquinlan.txt":  "a7daad85a251b37fb5be148c982d7c646e5dc1e49d296f42a5d8a8e52b543d5f",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmshaun60.txt":  "290a5a91710e40895d0c873f36d2073275011a00a79c890c2608072909eb2fdf",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmstrong.txt":  "eb6c880fdadc39bfd0422ca3b2735e7637141f9692d20f33234361788ef97053",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmsturges.txt":  "fe92aea7b57428e2280ff1a578cc8fb9635ea3f4146c22d4546e2cb16ca3aa09",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmtinkertom.txt":  "761f2c16957336c731d2880cccd84feb9de42ddbbe283c09cfaeb032c8f60f00",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmtommylonegan.txt":  "939bfa11f3799647513a8a2b26966dd0421560c3d709c200266b40270fbead15",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmvadimbobrov.txt":  "62a05b5654e9d55d2b086f2719ec0bd90b72eb0cfdcdb5589aef85201c7b2fe1",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmvirgil.txt":  "1f13e75202be4b2fd16386da7c15ffd0ecb59010e844c49e6e8afb887904a812",
+                                                                "F4SE/Plugins/SurvivorsCompany/sheets/npcmx6-88.txt":  "ad1187eb1bfd159dc29c06314ccbc552c288740d8fdccba2f69fcc76d888db6d",
+                                                                "Interface/SurvivorsCompanyInput.swf":  "82dfc28e84af55757db3e8c9c284bd7b9a85965c2befa88951a6667f8307b1b6",
+                                                                "Scripts/SurvivorsCompany.pex":  "773fbd2d9e52a424dae11124a36a6206768305cd19584c6a41e2ee1733c4c3e2",
+                                                                "Sound/Voice/SurvivorsCompany.esp/SCVoice/00000803_1.fuz":  "54697ef4664880d9d2d38fdc0f4713cbd877156a19d9141af456bc4f9f9c5431",
+                                                                "Sound/Voice/SurvivorsCompany.esp/SCVoice/00000805_1.fuz":  "54697ef4664880d9d2d38fdc0f4713cbd877156a19d9141af456bc4f9f9c5431",
+                                                                "SurvivorsCompany.esp":  "73eeab7eb991c75caa3164153b6f10b3fa50b6764dd2b53d58d60c97095eda49"
+                                                            }
+                                              }
                                           ],
                               "requirements":  [
                                                    {
