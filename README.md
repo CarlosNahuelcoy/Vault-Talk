@@ -27,6 +27,12 @@ launcher open.
 **[VaultTalk.exe](https://github.com/CarlosNahuelcoy/Vault-Talk/releases/latest)** — one file, nothing to install
 (Windows 10/11; it also runs under Proton on Linux).
 
+## Without the launcher
+
+Some antivirus programs flag new, unsigned programs. Everything the launcher does for the voices is also in
+**[voice-setup](voice-setup)** (download [VoiceSetup.zip](https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/voice-setup/VoiceSetup.zip),
+unzip, double-click `VoiceSetup.bat`): a plain-text script you can read before running it.
+
 ## Not ours
 
 Vault-Talk downloads a few third-party tools for you so you don't have to hunt for them. We don't own them

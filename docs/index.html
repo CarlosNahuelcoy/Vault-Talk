@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vault-Talk</title>
+<meta name="description" content="One mod in two versions, Courier's Company for Fallout: New Vegas and Survivor's Company for Fallout 4: every character gets a mind (an AI) and a cloned voice, your companions most of all. Install, connect an AI, set up the voices.">
+<style>
+  :root {
+    --bg: #0e1310; --panel: #151d18; --panel2: #1b251f; --line: #2a3a30;
+    --text: #dfe8e1; --muted: #9db0a3; --accent: #7ee08a; --accent-ink: #0e1310; --warn: #f0c060; --bad: #ff8a7a;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f4f6f2; --panel: #ffffff; --panel2: #eef2ec; --line: #d6ded6;
+      --text: #18221b; --muted: #55665a; --accent: #23874a; --accent-ink: #ffffff; --warn: #9a6a00; --bad: #b3261e;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  html[data-lang="en"] [lang="es"], html[data-lang="es"] [lang="en"] { display: none !important; }
+  a { color: var(--accent); }
+  code, .mono { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .92em; }
+  code { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  header { padding: 28px 0 8px; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { font-weight: 800; letter-spacing: .5px; font-size: 1.15rem; }
+  .brand span { color: var(--accent); }
+  .langs button { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 4px 12px; cursor: pointer; font: inherit; font-size: .85rem; }
+  .langs button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+  h1 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); line-height: 1.15; margin: 28px 0 10px; }
+  .lead { color: var(--muted); font-size: 1.08rem; max-width: 680px; margin: 0; }
+  .versions { margin: 18px 0 0; color: var(--muted); }
+  .mods { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 22px 0 6px; }
+  .mod { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .mod b { display: block; font-size: 1.05rem; }
+  .mod small { color: var(--muted); }
+  .steps { counter-reset: step; margin: 30px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .step { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 20px 16px; position: relative; }
+  .step h2 { margin: 0 0 6px; font-size: 1.3rem; display: flex; align-items: center; gap: 12px; }
+  .step h2::before { counter-increment: step; content: counter(step); flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-size: 1rem; font-weight: 800; }
+  .step p { margin: 8px 0; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 6px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); text-decoration: none; font: inherit; font-weight: 600; cursor: pointer; }
+  .btn.main { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn:disabled { opacity: .55; cursor: default; }
+  .btn small { font-weight: 400; opacity: .8; }
+  details { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 10px; }
+  details + details { margin-top: 0; }
+  summary { cursor: pointer; color: var(--muted); font-weight: 600; padding: 2px 0; }
+  summary:hover { color: var(--text); }
+  details[open] summary { color: var(--text); margin-bottom: 6px; }
+  details ol, details ul { padding-left: 22px; margin: 6px 0 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; margin: 6px 0 10px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .table-scroll { overflow-x: auto; }
+  .note { color: var(--muted); font-size: .93rem; }
+  .p2 { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 12px 0 4px; }
+  .p2 .code { font: 800 1.6rem/1.2 ui-monospace, Consolas, monospace; letter-spacing: 3px; color: var(--accent); margin: 4px 0 8px; }
+  .p2 .status { margin: 4px 0; }
+  .p2 .status.bad { color: var(--bad); }
+  .keybox { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+  .keybox code { font-size: 1rem; padding: 6px 10px; }
+  .help { background: var(--panel); border: 1px dashed var(--line); border-radius: var(--radius); padding: 18px 20px; margin: 0 0 30px; }
+  .help h2 { margin: 0 0 8px; font-size: 1.15rem; }
+  .help ul { margin: 6px 0; padding-left: 22px; }
+  footer { color: var(--muted); font-size: .85rem; padding: 10px 0 40px; border-top: 1px solid var(--line); }
+  @media (max-width: 520px) { .step { padding: 16px 14px 12px; } .btn { width: 100%; justify-content: center; } }
+  .section-title { font-size: 1.35rem; margin: 34px 0 12px; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .feature { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .feature b { display: block; margin-bottom: 2px; }
+  .feature p { margin: 0; color: var(--muted); font-size: .95rem; }
+  h3.sub { margin: 26px 0 0; font-size: 1.15rem; }
+  .keys { display: grid; gap: 10px; margin: 6px 0; }
+  .keyrow { display: flex; gap: 14px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .kbd { flex: none; min-width: 42px; text-align: center; font: 800 1rem/1 ui-monospace, Consolas, monospace; padding: 9px 10px; border-radius: 8px; border: 1px solid var(--accent); color: var(--accent); }
+  .keyrow p { margin: 0; }
+  .hero-launcher { background: var(--panel); border: 1px solid var(--accent); border-radius: var(--radius); padding: 4px 22px 18px; margin-top: 26px; }
+  .hero-launcher .section-title { margin-top: 18px; }
+  .carousel { margin: 14px 0 6px; outline: none; }
+  .carousel .frame { position: relative; background: #0a0f0c; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .carousel .slide { margin: 0; }
+  .carousel .slide img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+  .carousel figcaption { padding: 12px 16px 14px; background: var(--panel2); border-top: 1px solid var(--line); min-height: 86px; }
+  .carousel figcaption b { display: block; font-size: 1.08rem; margin-bottom: 2px; }
+  .carousel .nav { position: absolute; top: 34%; width: 46px; height: 46px; margin: 0 10px; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 1.9rem; line-height: 1; cursor: pointer; display: grid; place-items: center; padding: 0 0 4px; }
+  .carousel .nav:hover, .carousel .nav:focus-visible { background: rgba(0,0,0,.85); border-color: var(--accent); }
+  .carousel .prev { left: 0; } .carousel .next { right: 0; }
+  .carousel .dots { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+  .carousel .dots button { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 1px solid var(--accent); background: transparent; cursor: pointer; }
+  .carousel .dots button[aria-selected="true"] { background: var(--accent); }
+  @media (max-width: 520px) { .hero-launcher { padding: 2px 14px 14px; } .carousel .nav { width: 38px; height: 38px; margin: 0 6px; font-size: 1.5rem; top: 22%; } .carousel figcaption { min-height: 120px; } }
+  .reqs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .req { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 16px 14px; }
+  .req h3 { margin: 12px 0 8px; }
+  .req .mod { margin: 0 0 12px; }
+  .req b { display: block; margin-top: 8px; font-size: .9rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .req ul { margin: 4px 0 0; padding-left: 18px; }
+  .req li { margin: 4px 0; }
+  .req .why { display: block; color: var(--muted); font-size: .9rem; }
+  dialog.zoom { border: 0; padding: 0; background: transparent; max-width: 96vw; }
+  dialog.zoom::backdrop { background: rgba(0,0,0,.8); }
+  dialog.zoom img { display: block; max-width: 96vw; max-height: 92vh; border-radius: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div class="brand">VAULT<span>-</span>TALK</div>
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-set-lang="es" aria-pressed="false">Español</button>
+      </div>
+    </div>
+    <h1>
+      <span lang="en">Every character can think, remember and talk with their own voice. Your companions most of all.</span>
+      <span lang="es">Cada personaje puede pensar, recordar y hablar con su propia voz. Sobre todo tus compañeros.</span>
+    </h1>
+    <p class="lead">
+      <span lang="en">One mod gives every person in Fallout a mind (an AI) and a voice cloned live from the game's own: talk to anyone, and your companion comments, remembers and has a word with the people around. The launcher sets everything up for you: a few clicks and you're playing.</span>
+      <span lang="es">Un mod que les da a todas las personas de Fallout una mente (una IA) y una voz clonada en vivo desde la del propio juego: háblale a cualquiera, y tu compañero comenta, recuerda y conversa con la gente de alrededor. El launcher lo configura todo por ti: unos clics y ya estás jugando.</span>
+    </p>
+    <p class="versions"><span lang="en">The same mod in two versions, one per game. You only need the one for the game you play:</span><span lang="es">El mismo mod en dos versiones, una por juego. Solo necesitas la del juego que juegas:</span></p>
+    <div class="mods">
+      <div class="mod"><b>Courier's Company</b><small><span lang="en">the version for Fallout: New Vegas</span><span lang="es">la versión para Fallout: New Vegas</span></small></div>
+      <div class="mod"><b>Survivor's Company</b><small><span lang="en">the version for Fallout 4</span><span lang="es">la versión para Fallout 4</span></small></div>
+    </div>
+    <div class="btns">
+      <a class="btn main" data-link="launcher" href="#"><span lang="en">Download the launcher</span><span lang="es">Descargar el launcher</span> <small>Windows 10/11</small></a>
+      <a class="btn" href="#launcher"><span lang="en">See how it works</span><span lang="es">Ver cómo funciona</span></a>
+      <a class="btn" href="#manual"><span lang="en">Without the launcher</span><span lang="es">Sin el launcher</span></a>
+    </div>
+  </header>
+
+  <!-- ================================================= the launcher: the easy way -->
+  <section id="launcher" class="hero-launcher">
+    <h2 class="section-title"><span lang="en">The easy way: the launcher</span><span lang="es">La forma fácil: el launcher</span></h2>
+    <p>
+      <span lang="en"><b>Vault-Talk</b> installs and updates the mod for each game you have, connects the AI, installs the voices and tests it all outside the game. Open it, follow the checklist until every line says OK, and play. Once it's set up the game doesn't need it open.</span>
+      <span lang="es"><b>Vault-Talk</b> instala y actualiza el mod en cada juego que tengas, conecta la IA, instala las voces y prueba todo fuera del juego. Ábrelo, sigue la lista hasta que cada línea diga OK, y a jugar. Una vez configurado, el juego no lo necesita abierto.</span>
+    </p>
+    <div class="carousel" id="carousel" tabindex="0" aria-roledescription="carousel" aria-label="Launcher">
+      <div class="frame">
+        <figure class="slide" data-i="0">
+          <img src="img/02-newvegas-status-before.png" alt="Install the mod" width="1600" height="980">
+          <figcaption><b><span lang="en">1. Install the mod</span><span lang="es">1. Instala el mod</span></b><span lang="en">It finds your games, checks the script extender and its plugins, and installs the mod with one click (also into Mod Organizer 2).</span><span lang="es">Encuentra tus juegos, revisa el script extender y sus plugins, e instala el mod con un clic (también dentro de Mod Organizer 2).</span></figcaption>
+        </figure>
+        <figure class="slide" data-i="1" hidden>
+          <img src="img/04-ai.png" alt="Connect the AI" loading="lazy" width="1600" height="980">
+          <figcaption><b><span lang="en">2. Connect the AI</span><span lang="es">2. Conecta la IA</span></b><span lang="en">Press Connect and approve it on Player2 in your browser. No key to copy. Other services are one list away.</span><span lang="es">Pulsa Connect y apruébalo en Player2 desde tu navegador. Sin claves que copiar. Los otros servicios están a una lista de distancia.</span></figcaption>
+        </figure>
+        <figure class="slide" data-i="2" hidden>
+          <img src="img/05-voices.png" alt="Install the voices" loading="lazy" width="1600" height="980">
+          <figcaption><b><span lang="en">3. Install the voices</span><span lang="es">3. Instala las voces</span></b><span lang="en">Pocket TTS for any PC, OmniVoice for NVIDIA cards, and the tools for lip movement: each one is a button.</span><span lang="es">Pocket TTS para cualquier PC, OmniVoice para tarjetas NVIDIA, y las herramientas para el movimiento de la boca: cada uno es un botón.</span></figcaption>
+        </figure>
+        <figure class="slide" data-i="3" hidden>
+          <img src="img/07-newvegas-status-installed.png" alt="Everything OK" loading="lazy" width="1600" height="980">
+          <figcaption><b><span lang="en">4. Everything OK</span><span lang="es">4. Todo en OK</span></b><span lang="en">Each line of the checklist turns OK. Translations of the mod's menus are in the same list.</span><span lang="es">Cada línea de la lista pasa a OK. Las traducciones de los menús del mod están en la misma lista.</span></figcaption>
+        </figure>
+        <figure class="slide" data-i="4" hidden>
+          <img src="img/09-newvegas-tests.png" alt="Test it before playing" loading="lazy" width="1600" height="980">
+          <figcaption><b><span lang="en">5. Test it before playing</span><span lang="es">5. Pruébalo antes de jugar</span></b><span lang="en">One question to the AI and one spoken line, outside the game, so you know it works before you load a save.</span><span lang="es">Una pregunta a la IA y una frase hablada, fuera del juego, para saber que funciona antes de cargar una partida.</span></figcaption>
+        </figure>
+        <figure class="slide" data-i="5" hidden>
+          <img src="img/12-advanced-newvegas-behavior.png" alt="Fine-tune it, if you like" loading="lazy" width="1600" height="980">
+          <figcaption><b><span lang="en">6. Fine-tune it, if you like</span><span lang="es">6. Ajústalo, si quieres</span></b><span lang="en">Advanced mode shows every setting: keys, chats between companions, memory, what they notice.</span><span lang="es">El modo avanzado muestra cada ajuste: teclas, charlas entre compañeros, memoria, lo que notan.</span></figcaption>
+        </figure>
+        <button class="nav prev" type="button" aria-label="Previous">&#8249;</button>
+        <button class="nav next" type="button" aria-label="Next">&#8250;</button>
+      </div>
+      <div class="dots" role="tablist"></div>
+    </div>
+    <div class="btns">
+      <a class="btn main" data-link="launcher" href="#"><span lang="en">Download VaultTalk.exe</span><span lang="es">Descargar VaultTalk.exe</span> <small>Windows 10/11 · <span lang="en">nothing to install</span><span lang="es">nada que instalar</span></small></a>
+    </div>
+    <p class="note">
+      <span lang="en">Some antivirus programs flag new, unsigned programs like this one. If yours does, <a href="#manual">the way without the launcher</a> does the same job with a script you can read.</span>
+      <span lang="es">Algunos antivirus marcan programas nuevos y sin firma como este. Si el tuyo lo hace, <a href="#manual">la forma sin launcher</a> hace lo mismo con un script que puedes leer.</span>
+    </p>
+    <dialog class="zoom" id="zoom"><img alt=""></dialog>
+  </section>
+
+  <!-- ================================================= what it does -->
+  <section id="what">
+    <h2 class="section-title"><span lang="en">What they do</span><span lang="es">Qué hacen</span></h2>
+    <div class="features">
+      <div class="feature"><b><span lang="en">Talk to anyone</span><span lang="es">Háblale a cualquiera</span></b><p><span lang="en">Look at someone and type, or just speak into your microphone. They answer in character, out loud.</span><span lang="es">Mira a alguien y escribe, o simplemente habla por tu micrófono. Te responden en personaje, en voz alta.</span></p></div>
+      <div class="feature"><b><span lang="en">Their own voice</span><span lang="es">Su propia voz</span></b><p><span lang="en">Each character's voice is cloned on your PC from their lines in your game, in the language your game is dubbed in.</span><span lang="es">La voz de cada personaje se clona en tu PC a partir de sus frases en tu juego, en el idioma en que está doblado.</span></p></div>
+      <div class="feature"><b><span lang="en">They remember</span><span lang="es">Recuerdan</span></b><p><span lang="en">What matters stays per playthrough (the day, the place, what happened) and comes back when it fits.</span><span lang="es">Lo importante se guarda por partida (el día, el lugar, lo que pasó) y vuelve cuando viene al caso.</span></p></div>
+      <div class="feature"><b><span lang="en">They notice things</span><span lang="es">Se fijan en las cosas</span></b><p><span lang="en">Your armor, your radiation, the place, the radio, a workbench: now and then they comment, and stay quiet while you sneak.</span><span lang="es">Tu armadura, tu radiación, el lugar, la radio, una mesa de trabajo: de vez en cuando comentan, y se callan mientras te escabulles.</span></p></div>
+      <div class="feature"><b><span lang="en">Your companion talks to the world</span><span lang="es">Tu compañero le habla al mundo</span></b><p><span lang="en">Now and then they have a word with someone nearby, and both remember it. With more than one companion, they also talk among themselves.</span><span lang="es">De vez en cuando conversan con alguien cerca, y los dos lo recuerdan. Si llevas más de un compañero, también charlan entre ellos.</span></p></div>
+      <div class="feature"><b><span lang="en">Words that do things</span><span lang="es">Palabras que hacen cosas</span></b><p><span lang="en">Tell a companion to wait or follow, scare someone off, talk a merchant into a better price, invite a settler to one of your settlements.</span><span lang="es">Dile a un compañero que espere o que te siga, intimida a alguien, convence a un comerciante de un mejor precio, invita a alguien a vivir en uno de tus asentamientos.</span></p></div>
+    </div>
+    <h3 class="sub"><span lang="en">In the game</span><span lang="es">En el juego</span></h3>
+    <div class="carousel" id="game-shots" tabindex="0" aria-roledescription="carousel" aria-label="In the game">
+      <div class="frame">
+        <figure class="slide">
+          <img src="img/game/01-piper-sanctuary.jpg" alt="They speak up on their own" width="1600" height="900">
+          <figcaption><b><span lang="en">They speak up on their own</span><span lang="es">Hablan por su cuenta</span></b><span lang="en">Piper sizes up Sanctuary without being asked. Every line is spoken out loud with the character's voice, with subtitles (the log on the top right is optional).</span><span lang="es">Piper evalúa Sanctuary sin que nadie le pregunte. Cada frase se dice en voz alta con la voz del personaje, con subtítulos (el registro de arriba a la derecha es opcional).</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/02-codsworth-answers-piper.jpg" alt="With more companions, they answer each other" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">With more companions, they answer each other</span><span lang="es">Con más compañeros, se responden entre ellos</span></b><span lang="en">Codsworth disagrees with Piper, politely. If a mod lets you bring several companions, the mod has them talk among themselves.</span><span lang="es">Codsworth no está de acuerdo con Piper, con educación. Si un mod te deja llevar varios compañeros, el mod los hace conversar entre ellos.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/03-ask-everyone.jpg" alt="Talk to all your companions at once" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">Talk to all your companions at once</span><span lang="es">Háblales a todos tus compañeros a la vez</span></b><span lang="en">Shift + Y opens the box for everyone along (Shift + U to say it into the microphone), and each one answers.</span><span lang="es">Shift + Y abre el cuadro para todos los que te acompañan (Shift + U para decirlo por el micrófono), y cada uno responde.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/04-strong-answers.jpg" alt="Each one in character" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">Each one in character</span><span lang="es">Cada uno en su personaje</span></b><span lang="en">Strong answers like Strong. Who would win, Strong or a Deathclaw? Ask and find out.</span><span lang="es">Strong responde como Strong. ¿Quién ganaría, Strong o un Deathclaw? Pregunta y lo sabrás.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/05-piper-joins-in.jpg" alt="Everyone has an opinion" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">Everyone has an opinion</span><span lang="es">Todos opinan</span></b><span lang="en">Piper joins in with her own take. The optional chat log keeps the whole exchange.</span><span lang="es">Piper se suma con su propia opinión. El registro de chat opcional guarda toda la charla.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/06-diamond-city-banter.jpg" alt="They know where they are" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">They know where they are</span><span lang="es">Saben dónde están</span></b><span lang="en">In Diamond City they bicker about the beds back at Red Rocket. The place, the time and what happened shape what they say.</span><span lang="es">En Diamond City discuten por las camas de Red Rocket. El lugar, la hora y lo que pasó influyen en lo que dicen.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/07-talk-to-any-npc.jpg" alt="Talk to anyone" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">Talk to anyone</span><span lang="es">Háblale a cualquiera</span></b><span lang="en">Not only companions: any person in the world can be talked to, here a Diamond City guard.</span><span lang="es">No solo a los compañeros: puedes hablar con cualquier persona del mundo, aquí un guardia de Diamond City.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/08-guard-replies.jpg" alt="And they react to you" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">And they react to you</span><span lang="es">Y reaccionan a ti</span></b><span lang="en">The guard has opinions about the Super Mutant you brought along, and lets you know.</span><span lang="es">El guardia tiene su opinión sobre el supermutante que trajiste, y te la dice.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/09-they-notice-things.jpg" alt="They notice things" loading="lazy" width="1600" height="900">
+          <figcaption><b><span lang="en">They notice things</span><span lang="es">Se fijan en las cosas</span></b><span lang="en">A stray cat, the rain: now and then they comment on what's around them.</span><span lang="es">Un gato callejero, la lluvia: de vez en cuando comentan lo que los rodea.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/10-nv-boone-goodsprings.jpg" alt="New Vegas: Boone sizes up Goodsprings" loading="lazy" width="1280" height="720">
+          <figcaption><b><span lang="en">New Vegas: Boone sizes up Goodsprings</span><span lang="es">New Vegas: Boone evalúa Goodsprings</span></b><span lang="en">In New Vegas, Courier's Company does the same: Boone speaks up on his own about the place, in his own voice.</span><span lang="es">En New Vegas, Courier's Company hace lo mismo: Boone opina por su cuenta sobre el lugar, con su propia voz.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/11-nv-ede-answers-boone.jpg" alt="ED-E answers Boone" loading="lazy" width="1280" height="720">
+          <figcaption><b><span lang="en">ED-E has a voice too</span><span lang="es">ED-E también tiene voz</span></b><span lang="en">ED-E answers Boone with a robot voice from the base game (or only beeps, if you prefer).</span><span lang="es">ED-E le responde a Boone con una voz de robot del juego base (o solo pita, si lo prefieres).</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/12-nv-chat-box.jpg" alt="Type what you want to say" loading="lazy" width="1280" height="720">
+          <figcaption><b><span lang="en">Say whatever you want</span><span lang="es">Di lo que quieras</span></b><span lang="en">A key opens the box: write anything, or hold the microphone key and say it.</span><span lang="es">Una tecla abre el cuadro: escribe lo que quieras, o mantén la tecla del micrófono y dilo.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/13-nv-boone-replies.jpg" alt="Boone replies" loading="lazy" width="1280" height="720">
+          <figcaption><b><span lang="en">And they answer in character</span><span lang="es">Y responden en su personaje</span></b><span lang="en">Boone knows the story so far: the man in the plaid shirt, and where you woke up.</span><span lang="es">Boone conoce la historia hasta ahora: el hombre de la camisa a cuadros, y dónde despertaste.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/14-nv-primm-slim.jpg" alt="Talk to Primm Slim" loading="lazy" width="1280" height="720">
+          <figcaption><b><span lang="en">Anyone in the Mojave</span><span lang="es">Cualquiera en el Mojave</span></b><span lang="en">Not only companions: here the Courier asks Primm Slim where he came from.</span><span lang="es">No solo los compañeros: aquí el Mensajero le pregunta a Primm Slim de dónde salió.</span></figcaption>
+        </figure>
+        <figure class="slide" hidden>
+          <img src="img/game/15-nv-primm-slim-story.jpg" alt="Primm Slim tells his story" loading="lazy" width="1280" height="720">
+          <figcaption><b><span lang="en">They know their own story</span><span lang="es">Conocen su propia historia</span></b><span lang="en">Primm Slim answers with what he really is in the game: the Vikki and Vance's greeter.</span><span lang="es">Primm Slim responde con lo que de verdad es en el juego: el anfitrión del Vikki and Vance.</span></figcaption>
+        </figure>
+        <button class="nav prev" type="button" aria-label="Previous">&#8249;</button>
+        <button class="nav next" type="button" aria-label="Next">&#8250;</button>
+      </div>
+      <div class="dots" role="tablist"></div>
+    </div>
+    <p class="note"><span lang="en">Fallout 4 with Piper, Codsworth and Strong. <b>Several companions at once comes from another mod</b>, not from this one: on its own, Fallout 4 lets one companion follow you, and New Vegas one person plus ED-E or Rex. If you add a mod for more companions, this one is ready for them to talk to each other. The box on the top right is the optional chat log, so you miss no conversation: it comes off, and you turn it on in the mod's MCM page (in New Vegas it needs UI Organizer).</span><span lang="es">Fallout 4 con Piper, Codsworth y Strong. <b>Llevar varios compañeros a la vez viene de otro mod</b>, no de este: por sí solo, Fallout 4 deja que te siga un compañero, y New Vegas una persona más ED-E o Rex. Si agregas un mod para tener más compañeros, este está preparado para que conversen entre ellos. El cuadro de arriba a la derecha es el registro de chat opcional, para que no te pierdas ninguna conversación: viene desactivado y se activa en la página del mod en el MCM (en New Vegas necesita UI Organizer).</span></p>
+  </section>
+
+
+
+  <!-- ================================================= playing -->
+  <section id="play">
+    <h2 class="section-title"><span lang="en">Playing with it</span><span lang="es">Cómo se juega</span></h2>
+    <div class="keys">
+      <div class="keyrow"><span class="kbd">Y</span><p><span lang="en"><b>Write to someone.</b> Look at a character and press it: a text box opens. Type and press Enter; they answer out loud with subtitles.</span><span lang="es"><b>Escríbele a alguien.</b> Mira a un personaje y púlsala: se abre un cuadro de texto. Escribe y pulsa Enter; te responde en voz alta con subtítulos.</span></p></div>
+      <div class="keyrow"><span class="kbd">U</span><p><span lang="en"><b>Speak to someone.</b> Hold it and talk into your microphone; let go and they answer. It can also work as press once to start, again to stop.</span><span lang="es"><b>Háblale a alguien.</b> Mantenla y habla por tu micrófono; suéltala y te responde. También puede funcionar como pulsar una vez para empezar y otra para terminar.</span></p></div>
+      <div class="keyrow"><span class="kbd">Shift</span><p><span lang="en"><b>Talk to all your companions at once.</b> Hold Shift while you press Y (or U for the microphone): the box says "Everyone" and each one answers. Handy when more than one is with you.</span><span lang="es"><b>Háblales a todos tus compañeros a la vez.</b> Mantén Shift mientras pulsas Y (o U para el micrófono): el cuadro dice "Everyone" y cada uno responde. Útil cuando te acompaña más de uno.</span></p></div>
+      <div class="keyrow"><span class="kbd">MCM</span><p><span lang="en"><b>Change things in the game.</b> The mod's page in the Mod Configuration Menu turns it on or off and changes the keys, the chats and how often they comment.</span><span lang="es"><b>Cambia cosas en el juego.</b> La página del mod en el menú de configuración de mods (MCM) lo enciende o apaga y cambia las teclas, las charlas y cada cuánto comentan.</span></p></div>
+    </div>
+    <p class="note">
+      <span lang="en">The first time a character speaks, their voice is cloned: that line takes a little longer, the next ones don't. The mod tells you in the game when the voices are ready.</span>
+      <span lang="es">La primera vez que un personaje habla se clona su voz: esa frase tarda un poco más, las siguientes no. El mod te avisa en el juego cuando las voces están listas.</span>
+    </p>
+  </section>
+
+  <!-- ================================================= what you need -->
+  <section id="needs">
+    <h2 class="section-title"><span lang="en">What you need</span><span lang="es">Qué necesitas</span></h2>
+    <p class="note">
+      <span lang="en">Pick your game: the version of the mod for it and its requirements, installed like any other mod (Vortex or Mod Organizer 2). The launcher checks them for you and points you to whatever is missing. The AI and the voices aren't mods: the launcher or the steps below set them up.</span>
+      <span lang="es">Elige tu juego: la versión del mod para él y sus requisitos, instalados como cualquier otro mod (Vortex o Mod Organizer 2). El launcher los revisa por ti y te indica lo que falte. La IA y las voces no son mods: las configura el launcher o los pasos de más abajo.</span>
+    </p>
+    <div class="reqs">
+      <div class="req">
+        <h3>Fallout: New Vegas</h3>
+        <p class="mod"><a class="btn main" data-link="modFnv" href="#">Courier's Company</a></p>
+        <b><span lang="en">Required</span><span lang="es">Obligatorios</span></b>
+        <ul>
+          <li><a href="https://www.nexusmods.com/newvegas/mods/67883" target="_blank" rel="noopener">xNVSE</a> <span class="why"><span lang="en">the script extender, 6.3.5 or newer</span><span lang="es">el script extender, 6.3.5 o más nuevo</span></span></li>
+          <li><a href="https://www.nexusmods.com/newvegas/mods/58277" target="_blank" rel="noopener">JIP LN NVSE Plugin</a> <span class="why"><span lang="en">57.0 or newer</span><span lang="es">57.0 o más nuevo</span></span></li>
+        </ul>
+        <b><span lang="en">Optional</span><span lang="es">Opcionales</span></b>
+        <ul>
+          <li><a href="https://www.nexusmods.com/newvegas/mods/42507" target="_blank" rel="noopener">The Mod Configuration Menu</a> <span class="why"><span lang="en">to change the settings in the game</span><span lang="es">para cambiar los ajustes dentro del juego</span></span></li>
+          <li><a href="https://www.nexusmods.com/newvegas/mods/57174" target="_blank" rel="noopener">UIO - User Interface Organizer</a> <span class="why"><span lang="en">only for the chat log</span><span lang="es">solo para el registro de chat</span></span></li>
+          <li><span lang="en">A mod for more companions</span><span lang="es">Un mod para tener más compañeros</span> <span class="why"><span lang="en">any you like, if you want several to come along and talk to each other</span><span lang="es">el que prefieras, si quieres que te acompañen varios y conversen entre ellos</span></span></li>
+        </ul>
+      </div>
+      <div class="req">
+        <h3>Fallout 4</h3>
+        <p class="mod"><a class="btn main" data-link="modFo4" href="#">Survivor's Company</a></p>
+        <b><span lang="en">Required</span><span lang="es">Obligatorios</span></b>
+        <ul>
+          <li><a href="https://www.nexusmods.com/fallout4/mods/42147" target="_blank" rel="noopener">F4SE</a> <span class="why"><span lang="en">the script extender for your version of the game</span><span lang="es">el script extender para tu versión del juego</span></span></li>
+          <li><a href="https://www.nexusmods.com/fallout4/mods/47327" target="_blank" rel="noopener">Address Library for F4SE Plugins</a> <span class="why"><span lang="en">for your version of the game</span><span lang="es">para tu versión del juego</span></span></li>
+        </ul>
+        <b><span lang="en">Optional</span><span lang="es">Opcionales</span></b>
+        <ul>
+          <li><a href="https://www.nexusmods.com/fallout4/mods/21497" target="_blank" rel="noopener">Mod Configuration Menu</a> <span class="why"><span lang="en">to change the settings in the game</span><span lang="es">para cambiar los ajustes dentro del juego</span></span></li>
+          <li><span lang="en">A mod for more companions</span><span lang="es">Un mod para tener más compañeros</span> <span class="why"><span lang="en">any you like, if you want several to come along and talk to each other</span><span lang="es">el que prefieras, si quieres que te acompañen varios y conversen entre ellos</span></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================= without the launcher -->
+  <section id="manual">
+    <h2 class="section-title"><span lang="en">Without the launcher</span><span lang="es">Sin el launcher</span></h2>
+    <p class="note">
+      <span lang="en">The same result by hand, in three steps: your mod manager for the mod, a script you can read for the voices.</span>
+      <span lang="es">El mismo resultado a mano, en tres pasos: tu gestor de mods para el mod, un script que puedes leer para las voces.</span>
+    </p>
+  <div class="steps">
+    <!-- ================================================= 1. the mod -->
+    <section class="step" id="mod">
+      <h2><span lang="en">Install the mod</span><span lang="es">Instala el mod</span></h2>
+      <p>
+        <span lang="en">Only the version for the game you play: Courier's Company for New Vegas, Survivor's Company for Fallout 4. Your mod manager (Vortex or Mod Organizer 2) installs it like any other mod.</span>
+        <span lang="es">Solo la versión del juego que juegas: Courier's Company para New Vegas, Survivor's Company para Fallout 4. Tu gestor de mods (Vortex o Mod Organizer 2) lo instala como cualquier otro mod.</span>
+      </p>
+      <div class="btns">
+        <a class="btn main" data-link="modFnv" href="#">Courier's Company <small>New Vegas</small></a>
+        <a class="btn main" data-link="modFo4" href="#">Survivor's Company <small>Fallout 4</small></a>
+      </div>
+      <details>
+        <summary><span lang="en">What else it needs</span><span lang="es">Qué más necesita</span></summary>
+        <ul>
+          <li><b>New Vegas:</b> <a href="https://www.nexusmods.com/newvegas/mods/67883" target="_blank" rel="noopener">xNVSE</a> (6.3.5+) <span lang="en">and</span><span lang="es">y</span> <a href="https://www.nexusmods.com/newvegas/mods/58277" target="_blank" rel="noopener">JIP LN NVSE Plugin</a> (57+).</li>
+          <li><b>Fallout 4:</b> <a href="https://www.nexusmods.com/fallout4/mods/42147" target="_blank" rel="noopener">F4SE</a> <span lang="en">and</span><span lang="es">y</span> <a href="https://www.nexusmods.com/fallout4/mods/47327" target="_blank" rel="noopener">Address Library for F4SE Plugins</a>.</li>
+        </ul>
+        <p class="note">
+          <span lang="en">Start the game through the script extender's loader (Mod Organizer 2 and Vortex do it for you once it's set up).</span>
+          <span lang="es">Abre el juego con el cargador del script extender (Mod Organizer 2 y Vortex lo hacen por ti una vez configurado).</span>
+        </p>
+      </details>
+      <details>
+        <summary><span lang="en">Vortex, Mod Organizer 2 or by hand</span><span lang="es">Vortex, Mod Organizer 2 o a mano</span></summary>
+        <ul>
+          <li><b>Vortex:</b> <span lang="en">drag the zip onto Vortex, enable it and press Deploy.</span><span lang="es">arrastra el zip a Vortex, actívalo y pulsa Deploy (Desplegar).</span></li>
+          <li><b>Mod Organizer 2:</b> <span lang="en">"Install a new mod from an archive", pick the zip, enable it in the left list and its plugin in the right one.</span><span lang="es">"Instalar un mod nuevo desde un archivo", elige el zip, actívalo en la lista de la izquierda y su plugin en la de la derecha.</span></li>
+          <li><span lang="en"><b>By hand:</b> unzip it into the game's <code>Data</code> folder and enable the <code>.esp</code> in the game's launcher or your load-order tool.</span><span lang="es"><b>A mano:</b> descomprímelo en la carpeta <code>Data</code> del juego y activa el <code>.esp</code> en el launcher del juego o en tu herramienta de orden de carga.</span></li>
+        </ul>
+        <p class="note">
+          <span lang="en">The zip carries no <code>config.json</code> on purpose, so an update never wipes your settings or your key. Steps 2 and 3 create it.</span>
+          <span lang="es">El zip no trae <code>config.json</code> a propósito, para que una actualización nunca borre tus ajustes ni tu clave. Los pasos 2 y 3 lo crean.</span>
+        </p>
+      </details>
+      <details>
+        <summary><span lang="en">Translations</span><span lang="es">Traducciones</span></summary>
+        <p>
+          <span lang="en">The mod speaks and replies in your game's language. Optional packs translate their menus and texts: New Vegas (de, es, fr, it, pt-BR), Fallout 4 (zh, de, es, fr, it, ja, pl, pt-BR, ru). They're on the same download page.</span>
+          <span lang="es">El mod habla y responde en el idioma de tu juego. Paquetes opcionales traducen sus menús y textos: New Vegas (de, es, fr, it, pt-BR), Fallout 4 (zh, de, es, fr, it, ja, pl, pt-BR, ru). Están en la misma página de descarga.</span>
+        </p>
+      </details>
+    </section>
+
+    <!-- ================================================= 2. the AI -->
+    <section class="step" id="ai">
+      <h2><span lang="en">Connect an AI</span><span lang="es">Conecta una IA</span></h2>
+      <p>
+        <span lang="en"><b>Player2</b> is the easy one: free to start, and you only approve it in your browser. The voice setup in step 3 can do this for you; this button is here if you'd rather do it now.</span>
+        <span lang="es"><b>Player2</b> es lo más fácil: gratis para empezar, y solo lo apruebas en tu navegador. El instalador de voces del paso 3 puede hacerlo por ti; este botón está aquí si prefieres hacerlo ahora.</span>
+      </p>
+      <div class="btns">
+        <button class="btn main" type="button" id="p2Start"><span lang="en">Get my Player2 key</span><span lang="es">Obtener mi clave de Player2</span></button>
+      </div>
+      <div class="p2" id="p2Box" hidden>
+        <div id="p2Wait" hidden>
+          <div><span lang="en">Approve Vault-Talk on Player2 with this code:</span><span lang="es">Aprueba a Vault-Talk en Player2 con este código:</span></div>
+          <div class="code" id="p2Code"></div>
+          <a class="btn" id="p2Open" href="#" target="_blank" rel="noopener"><span lang="en">Open Player2</span><span lang="es">Abrir Player2</span></a>
+        </div>
+        <p class="status" id="p2Status" aria-live="polite"></p>
+        <div id="p2Done" hidden>
+          <div class="keybox">
+            <code id="p2Key"></code>
+            <button class="btn" type="button" id="p2Show"><span lang="en">Show</span><span lang="es">Mostrar</span></button>
+            <button class="btn" type="button" id="p2Copy"><span lang="en">Copy</span><span lang="es">Copiar</span></button>
+            <button class="btn" type="button" id="p2Config"><span lang="en">Download config.json</span><span lang="es">Descargar config.json</span></button>
+          </div>
+          <p class="note">
+            <span lang="en">The key stays in this page: it's sent nowhere and gone when you close it. Put it in the mod's <code>config.json</code>, under <code>"llm"</code> → <code>"key"</code>, with <code>"url": "https://api.player2.game/v1"</code> and <code>"model": "player2"</code>. Only use the downloaded file if the mod has no <code>config.json</code> yet: it goes into <code>Data\NVSE\Plugins\CouriersCompany\</code> or <code>Data\F4SE\Plugins\SurvivorsCompany\</code> (under Mod Organizer 2, inside the mod's folder).</span>
+            <span lang="es">La clave se queda en esta página: no se envía a ningún lado y desaparece al cerrarla. Ponla en el <code>config.json</code> del mod, en <code>"llm"</code> → <code>"key"</code>, con <code>"url": "https://api.player2.game/v1"</code> y <code>"model": "player2"</code>. Usa el archivo descargado solo si el mod todavía no tiene <code>config.json</code>: va en <code>Data\NVSE\Plugins\CouriersCompany\</code> o <code>Data\F4SE\Plugins\SurvivorsCompany\</code> (con Mod Organizer 2, dentro de la carpeta del mod).</span>
+          </p>
+        </div>
+      </div>
+      <details>
+        <summary><span lang="en">Other AIs (OpenRouter, OpenAI, Gemini, a local model)</span><span lang="es">Otras IA (OpenRouter, OpenAI, Gemini, un modelo local)</span></summary>
+        <p>
+          <span lang="en">Any service that speaks the OpenAI format works: put its address, model and key in <code>config.json</code> → <code>"llm"</code>. The launcher sets them with a list and tests them.</span>
+          <span lang="es">Sirve cualquier servicio con el formato de OpenAI: pon su dirección, modelo y clave en <code>config.json</code> → <code>"llm"</code>. El launcher los configura con una lista y los prueba.</span>
+        </p>
+        <div class="table-scroll"><table>
+          <tr><th><span lang="en">Service</span><span lang="es">Servicio</span></th><th>url</th><th>model</th></tr>
+          <tr><td>OpenRouter</td><td class="mono">https://openrouter.ai/api/v1</td><td class="mono">anthropic/claude-haiku-5.5</td></tr>
+          <tr><td>OpenAI</td><td class="mono">https://api.openai.com/v1</td><td class="mono">gpt-4.1-mini</td></tr>
+          <tr><td>Gemini</td><td class="mono">https://generativelanguage.googleapis.com/v1beta/openai</td><td class="mono">gemini-flash-latest</td></tr>
+          <tr><td>Ollama / LM Studio</td><td class="mono">http://127.0.0.1:11434/v1 · :1234/v1</td><td><span lang="en">the model you loaded</span><span lang="es">el modelo que cargaste</span></td></tr>
+        </table></div>
+      </details>
+    </section>
+
+    <!-- ================================================= 3. the voices -->
+    <section class="step" id="voices">
+      <h2><span lang="en">Set up the voices</span><span lang="es">Configura las voces</span></h2>
+      <p>
+        <span lang="en">Every character speaks with a voice cloned from their own lines in the game, made on your PC. One download sets it all up: the voice engine, the tools for the game's voice files, and the mod's settings.</span>
+        <span lang="es">Cada personaje habla con una voz clonada de sus propias frases del juego, hecha en tu PC. Una descarga lo configura todo: el motor de voz, las herramientas para los archivos de voz del juego y los ajustes del mod.</span>
+      </p>
+      <div class="btns">
+        <a class="btn main" data-link="voiceSetup" href="#"><span lang="en">Voice setup</span><span lang="es">Instalador de voces</span> <small>VoiceSetup.zip</small></a>
+      </div>
+      <p>
+        <span lang="en">Unzip it and double-click <code>VoiceSetup.bat</code>. It finds your games (also with Vortex or Mod Organizer 2), asks which engine you want, can connect Player2, and ends by speaking a line so you hear it works. It never touches your other settings.</span>
+        <span lang="es">Descomprímelo y haz doble clic en <code>VoiceSetup.bat</code>. Encuentra tus juegos (también con Vortex o Mod Organizer 2), te pregunta qué motor quieres, puede conectar Player2 y termina diciendo una frase para que escuches que funciona. Nunca toca tus otros ajustes.</span>
+      </p>
+      <details>
+        <summary><span lang="en">Which engine?</span><span lang="es">¿Qué motor?</span></summary>
+        <div class="table-scroll"><table>
+          <tr><th></th><th>Pocket TTS</th><th>OmniVoice</th></tr>
+          <tr><th><span lang="en">Runs on</span><span lang="es">Corre en</span></th><td><span lang="en">the processor, any PC</span><span lang="es">el procesador, cualquier PC</span></td><td><span lang="en">an NVIDIA card, 6 GB+ (10 GB is comfortable next to the game)</span><span lang="es">una tarjeta NVIDIA, 6 GB+ (10 GB va holgado junto al juego)</span></td></tr>
+          <tr><th><span lang="en">Download</span><span lang="es">Descarga</span></th><td>~0.9 GB</td><td>~7.4 GB <span lang="en">(Pocket included)</span><span lang="es">(incluye Pocket)</span></td></tr>
+          <tr><th><span lang="en">Disk</span><span lang="es">Disco</span></th><td>~2.5 GB</td><td>~14 GB</td></tr>
+          <tr><th><span lang="en">Voices</span><span lang="es">Voces</span></th><td><span lang="en">good, quick</span><span lang="es">buenas, rápidas</span></td><td><span lang="en">the closest to the original</span><span lang="es">las más parecidas a la original</span></td></tr>
+        </table></div>
+      </details>
+      <details>
+        <summary><span lang="en">What it downloads, and where</span><span lang="es">Qué descarga, y dónde</span></summary>
+        <ul>
+          <li><span lang="en">A private Python and the engine (python.org, pypi.org, download.pytorch.org, huggingface.co) into <code>%LOCALAPPDATA%\VaultTalk\engines</code>, or <code>C:\VaultTalk\engines</code> when your user name has accents or the path is long.</span><span lang="es">Un Python privado y el motor (python.org, pypi.org, download.pytorch.org, huggingface.co) en <code>%LOCALAPPDATA%\VaultTalk\engines</code>, o en <code>C:\VaultTalk\engines</code> si tu nombre de usuario tiene tildes o la ruta es larga.</span></li>
+          <li><span lang="en">FaceFXWrapper and FonixData.cdf (mouth movement) and, for Fallout 4, xWMAEncode, into <code>%LOCALAPPDATA%\VaultTalk\tools</code>.</span><span lang="es">FaceFXWrapper y FonixData.cdf (movimiento de la boca) y, para Fallout 4, xWMAEncode, en <code>%LOCALAPPDATA%\VaultTalk\tools</code>.</span></li>
+          <li><span lang="en">The settings go into each mod's <code>config.json</code>; the one before is kept as <code>config.json.bak</code>.</span><span lang="es">Los ajustes van al <code>config.json</code> de cada mod; el anterior queda como <code>config.json.bak</code>.</span></li>
+        </ul>
+        <p class="note">
+          <span lang="en"><code>VoiceSetup.ps1</code> is plain text: open it to read every step before running it.</span>
+          <span lang="es"><code>VoiceSetup.ps1</code> es texto plano: ábrelo para leer cada paso antes de ejecutarlo.</span>
+        </p>
+      </details>
+    </section>
+  </div>
+  </section>
+
+  <!-- ================================================= trouble -->
+  <section class="help" id="help">
+    <h2><span lang="en">If something doesn't work</span><span lang="es">Si algo no funciona</span></h2>
+    <ul>
+      <li><span lang="en">The mod tells you <b>in the game</b> when the voices are ready, or what failed.</span><span lang="es">El mod te avisa <b>en el juego</b> cuando las voces están listas, o qué falló.</span></li>
+      <li><span lang="en">Its <code>log.txt</code> is next to its <code>config.json</code> (<code>Data\NVSE\Plugins\CouriersCompany\</code> or <code>Data\F4SE\Plugins\SurvivorsCompany\</code>; with Mod Organizer 2, look in its <code>overwrite</code> folder too).</span><span lang="es">Su <code>log.txt</code> está junto a su <code>config.json</code> (<code>Data\NVSE\Plugins\CouriersCompany\</code> o <code>Data\F4SE\Plugins\SurvivorsCompany\</code>; con Mod Organizer 2, mira también en su carpeta <code>overwrite</code>).</span></li>
+      <li><span lang="en">The voice setup keeps its own log in <code>%LOCALAPPDATA%\VaultTalk\voice-setup.log</code>, with no keys in it. Run it again: it continues where it stopped.</span><span lang="es">El instalador de voces guarda su registro en <code>%LOCALAPPDATA%\VaultTalk\voice-setup.log</code>, sin claves. Vuelve a ejecutarlo: sigue desde donde se detuvo.</span></li>
+      <li><span lang="en">The launcher's Diagnostics page reads the logs and copies a report without keys or personal data.</span><span lang="es">La página Diagnóstico del launcher lee los logs y copia un informe sin claves ni datos personales.</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <span lang="en">Fallout and Vault Boy belong to Bethesda Softworks. FaceFXWrapper is Nukem9's; xWMAEncode is Microsoft's; Pocket TTS and OmniVoice belong to their authors.</span>
+    <span lang="es">Fallout y Vault Boy pertenecen a Bethesda Softworks. FaceFXWrapper es de Nukem9; xWMAEncode es de Microsoft; Pocket TTS y OmniVoice son de sus autores.</span>
+  </footer>
+</div>
+
+<script>
+// ---- the links, in one place: change them here when the mods go up on Nexus
+const LINKS = {
+  modFnv: "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/tag/mods",
+  modFo4: "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/tag/mods",
+  voiceSetup: "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/voice-setup/VoiceSetup.zip",
+  launcher: "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/latest",
+};
+const PLAYER2 = { api: "https://api.player2.game/v1", clientId: "01a1d526-1cd9-7717-beea-c62756252713" };
+
+// the launcher's screenshots: arrows, dots, keys, swipe; a click opens one full size
+const zoom = document.getElementById("zoom");
+zoom.addEventListener("click", () => zoom.close());
+for (const root of document.querySelectorAll(".carousel")) {
+  const slides = [...root.querySelectorAll(".slide")];
+  const dots = root.querySelector(".dots");
+  let at = 0;
+  slides.forEach((sl, i) => {
+    const d = document.createElement("button");
+    d.type = "button"; d.setAttribute("role", "tab"); d.setAttribute("aria-label", String(i + 1));
+    d.addEventListener("click", () => show(i));
+    dots.appendChild(d);
+    sl.querySelector("img").addEventListener("click", e => { zoom.querySelector("img").src = e.target.src; zoom.showModal(); });
+  });
+  function show(i) {
+    at = (i + slides.length) % slides.length;
+    slides.forEach((sl, j) => { sl.hidden = j !== at; });
+    [...dots.children].forEach((d, j) => d.setAttribute("aria-selected", String(j === at)));
+    const next = slides[(at + 1) % slides.length].querySelector("img");
+    next.loading = "eager";   // the next one ready before it's asked for
+  }
+  root.querySelector(".prev").addEventListener("click", () => show(at - 1));
+  root.querySelector(".next").addEventListener("click", () => show(at + 1));
+  root.addEventListener("keydown", e => { if (e.key === "ArrowLeft") show(at - 1); if (e.key === "ArrowRight") show(at + 1); });
+  let x0 = null;
+  root.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+  root.addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(at + (dx < 0 ? 1 : -1));
+  });
+  show(0);
+}
+
+for (const a of document.querySelectorAll("[data-link]")) {
+  a.href = LINKS[a.dataset.link];
+  a.target = "_blank"; a.rel = "noopener";
+}
+
+// ---- language: the browser's, or the one picked (remembered on this device only)
+function setLang(lang) {
+  document.documentElement.dataset.lang = lang;
+  document.documentElement.lang = lang;
+  for (const b of document.querySelectorAll("[data-set-lang]")) b.setAttribute("aria-pressed", String(b.dataset.setLang === lang));
+  try { localStorage.setItem("vt-lang", lang); } catch (e) {}
+}
+let saved = null;
+try { saved = localStorage.getItem("vt-lang"); } catch (e) {}
+setLang(saved || ((navigator.language || "en").toLowerCase().startsWith("es") ? "es" : "en"));
+for (const b of document.querySelectorAll("[data-set-lang]")) b.addEventListener("click", () => setLang(b.dataset.setLang));
+const T = (en, es) => document.documentElement.dataset.lang === "es" ? es : en;
+
+// ---- Player2: OAuth device login, all in this page. The key is kept in a variable, nowhere else.
+const $ = id => document.getElementById(id);
+let p2Key = "", shown = false, busy = false;
+function status(text, bad) { $("p2Status").textContent = text; $("p2Status").className = "status" + (bad ? " bad" : ""); }
+function masked() { return shown ? p2Key : "•".repeat(Math.max(8, p2Key.length - 4)).slice(0, 24) + p2Key.slice(-4); }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function post(path, body) {
+  const r = await fetch(PLAYER2.api + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  let data = {};
+  try { data = await r.json(); } catch (e) {}
+  return { ok: r.ok, status: r.status, data };
+}
+
+$("p2Start").addEventListener("click", async () => {
+  if (busy) return;
+  busy = true; $("p2Start").disabled = true;
+  $("p2Box").hidden = false; $("p2Done").hidden = true; $("p2Wait").hidden = true;
+  status(T("Asking Player2 for a code…", "Pidiendo un código a Player2…"));
+  try {
+    const n = await post("/login/device/new", { client_id: PLAYER2.clientId });
+    if (!n.ok) throw new Error(T("Player2 didn't answer (HTTP ", "Player2 no respondió (HTTP ") + n.status + ").");
+    const d = n.data;
+    const device = d.deviceCode || d.device_code, code = d.userCode || d.user_code;
+    const page = d.verificationUriComplete || d.verificationUri || "https://player2.game";
+    let interval = Math.max(1, d.interval || 5);
+    const deadline = Date.now() + Math.max(30, d.expiresIn || 600) * 1000;
+    if (!device) throw new Error(T("Player2 didn't give a code.", "Player2 no entregó un código."));
+    $("p2Code").textContent = code || "";
+    $("p2Open").href = page;
+    $("p2Wait").hidden = false;
+    window.open(page, "_blank", "noopener");
+    status(T("Waiting for you to approve it on Player2…", "Esperando a que lo apruebes en Player2…"));
+    while (Date.now() < deadline) {
+      await sleep(interval * 1000);
+      const t = await post("/login/device/token", { client_id: PLAYER2.clientId, device_code: device, grant_type: "urn:ietf:params:oauth:grant-type:device_code" });
+      if (t.ok && t.data.p2Key) {
+        p2Key = t.data.p2Key; shown = false;
+        $("p2Key").textContent = masked();
+        $("p2Wait").hidden = true; $("p2Done").hidden = false;
+        status(T("Connected. Your key:", "Conectado. Tu clave:"));
+        return;
+      }
+      const err = t.data.error || "";
+      if (err === "access_denied") throw new Error(T("Access denied on Player2.", "Acceso denegado en Player2."));
+      if (err === "expired_token") break;
+      if (err === "slow_down") interval += 2;
+    }
+    throw new Error(T("The code expired. Try again.", "El código expiró. Inténtalo de nuevo."));
+  } catch (e) {
+    $("p2Wait").hidden = true;
+    status((e && e.message) || T("It didn't work. Try again.", "No funcionó. Inténtalo de nuevo."), true);
+  } finally {
+    busy = false; $("p2Start").disabled = false;
+  }
+});
+$("p2Show").addEventListener("click", () => { shown = !shown; $("p2Key").textContent = masked(); });
+$("p2Copy").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(p2Key); status(T("Copied.", "Copiada.")); }
+  catch (e) { shown = true; $("p2Key").textContent = masked(); status(T("Couldn't copy: select it and copy it by hand.", "No pude copiarla: selecciónala y cópiala a mano."), true); }
+});
+$("p2Config").addEventListener("click", () => {
+  const json = JSON.stringify({ llm: { url: PLAYER2.api, model: "player2", key: p2Key } }, null, 2) + "\n";
+  const url = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+  const a = Object.assign(document.createElement("a"), { href: url, download: "config.json" });
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+</script>
+</body>
+</html>
