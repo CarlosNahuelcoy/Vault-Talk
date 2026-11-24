@@ -1,10 +1,10 @@
 {
     "launcher":  {
-                     "version":  "0.1.7",
+                     "version":  "0.1.8",
                      "page":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/latest",
-                     "exe":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/launcher-v0.1.7/VaultTalk.exe",
-                     "sha256":  "3516c1c844063fb012eee8f3969af6db44486c10081727c47ae970888f29ef77",
-                     "size":  1533952
+                     "exe":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/launcher-v0.1.8/VaultTalk.exe",
+                     "sha256":  "e1540f6a3fc034a451efd9f048a1350556d4a966d7e43f058a2b220b0925a782",
+                     "size":  1539072
                  },
     "games":  {
                   "fnv":  {
