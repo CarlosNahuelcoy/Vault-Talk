@@ -13,7 +13,7 @@
                                           "zip":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/mods/CouriersCompany.zip",
                                           "sha256":  "994c5f4358f0b8f1896696b5bb764b5961391e3768e5233ef6ab05e830b487b5",
                                           "size":  735382,
-                                          "nexusMod":  0,
+                                          "nexusMod":  100670,
                                           "nexusFile":  0,
                                           "files":  {
                                                         "NVSE/Plugins/CouriersCompany.dll":  "0ad96796d525f0bbc2cc13f10dfeef2faed78d4d0eec09fe8cbbb1a99d72b58e",
@@ -1305,7 +1305,7 @@
                                           "zip":  "https://github.com/CarlosNahuelcoy/Vault-Talk/releases/download/mods/SurvivorsCompany.zip",
                                           "sha256":  "d936968f82eef77e2cc82ed8a09b9484f378a53578954cc8f8a6405e885b4406",
                                           "size":  1317217,
-                                          "nexusMod":  0,
+                                          "nexusMod":  111831,
                                           "nexusFile":  0,
                                           "files":  {
                                                         "F4SE/Plugins/SurvivorsCompany.dll":  "1178b91d3ea6d5168e9cee9e50c3ba93126b0bdb471e2cbe69606e9f454074ff",
