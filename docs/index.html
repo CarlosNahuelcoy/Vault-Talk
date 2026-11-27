@@ -106,6 +106,7 @@
   dialog.zoom { border: 0; padding: 0; background: transparent; max-width: 96vw; }
   dialog.zoom::backdrop { background: rgba(0,0,0,.8); }
   dialog.zoom img { display: block; max-width: 96vw; max-height: 92vh; border-radius: 8px; }
+  code.sha { word-break: break-all; }
 </style>
 </head>
 <body>
@@ -180,8 +181,8 @@
       <a class="btn main" data-link="launcher" href="#"><span lang="en">Download VaultTalk.exe</span><span lang="es">Descargar VaultTalk.exe</span> <small>Windows 10/11 · <span lang="en">nothing to install</span><span lang="es">nada que instalar</span></small></a>
     </div>
     <p class="note">
-      <span lang="en">Some antivirus programs flag new, unsigned programs like this one. If yours does, <a href="#manual">the way without the launcher</a> does the same job with a script you can read.</span>
-      <span lang="es">Algunos antivirus marcan programas nuevos y sin firma como este. Si el tuyo lo hace, <a href="#manual">la forma sin launcher</a> hace lo mismo con un script que puedes leer.</span>
+      <span lang="en">Some antivirus programs flag new, unsigned programs like this one as a "trojan": a guess based on it being new and unknown, not on anything it does. It's a plain .NET program, not packed or compressed; it only downloads the mods, the voices and their tools from the addresses listed on this page. To check your copy, compare its SHA-256 (in PowerShell: <code>Get-FileHash VaultTalk.exe</code>) with the official one: <code class="sha" id="exeSha">…</code>. If you'd rather not run it, <a href="#manual">the way without the launcher</a> does the same job with a script you can read.</span>
+      <span lang="es">Algunos antivirus marcan programas nuevos y sin firma como este como "troyano": es una suposición porque es nuevo y desconocido, no por algo que haga. Es un programa .NET normal, no empaquetado ni comprimido; solo descarga los mods, las voces y sus herramientas desde las direcciones que aparecen en esta página. Para comprobar tu copia, compara su SHA-256 (en PowerShell: <code>Get-FileHash VaultTalk.exe</code>) con el oficial: <code class="sha" id="exeSha2">…</code>. Si prefieres no ejecutarlo, <a href="#manual">la forma sin launcher</a> hace lo mismo con un script que puedes leer.</span>
     </p>
     <dialog class="zoom" id="zoom"><img alt=""></dialog>
   </section>
@@ -481,6 +482,8 @@
       <li><span lang="en">The mod tells you <b>in the game</b> when the voices are ready, or what failed.</span><span lang="es">El mod te avisa <b>en el juego</b> cuando las voces están listas, o qué falló.</span></li>
       <li><span lang="en">Its <code>log.txt</code> is next to its <code>config.json</code> (<code>Data\NVSE\Plugins\CouriersCompany\</code> or <code>Data\F4SE\Plugins\SurvivorsCompany\</code>; with Mod Organizer 2, look in its <code>overwrite</code> folder too).</span><span lang="es">Su <code>log.txt</code> está junto a su <code>config.json</code> (<code>Data\NVSE\Plugins\CouriersCompany\</code> o <code>Data\F4SE\Plugins\SurvivorsCompany\</code>; con Mod Organizer 2, mira también en su carpeta <code>overwrite</code>).</span></li>
       <li><span lang="en">The voice setup keeps its own log in <code>%LOCALAPPDATA%\VaultTalk\voice-setup.log</code>, with no keys in it. Run it again: it continues where it stopped.</span><span lang="es">El instalador de voces guarda su registro en <code>%LOCALAPPDATA%\VaultTalk\voice-setup.log</code>, sin claves. Vuelve a ejecutarlo: sigue desde donde se detuvo.</span></li>
+      <li><span lang="en"><b>Subtitles but no voice?</b> Close the game and open the launcher's Diagnostics page: "Voices in the game" says whether the voices are off, whether the voice engine failed to start (and why), or how many lines were spoken. Usually installing the voices again on the Voices page and running Tests fixes it. OmniVoice needs an NVIDIA card; Pocket TTS works on any PC.</span><span lang="es"><b>¿Subtítulos pero sin voz?</b> Cierra el juego y abre la página Diagnóstico del launcher: "Voces en la partida" dice si las voces están apagadas, si el motor de voz no arrancó (y por qué) o cuántas frases se dijeron. Casi siempre se arregla volviendo a instalar las voces en la página Voces y usando Pruebas. OmniVoice necesita una tarjeta NVIDIA; Pocket TTS funciona en cualquier PC.</span></li>
+      <li><span lang="en"><b>Slow replies?</b> The same page shows how long the AI took. With Player2 or a quick cloud model a reply takes about 1 to 3 seconds, and OmniVoice about 2 seconds per line. A model running on your own PC shares the graphics card with the game and the voices and can take much longer; Pocket TTS on the processor takes a few seconds per line. The first line of each character is slower: that's when their voice is cloned.</span><span lang="es"><b>¿Respuestas lentas?</b> La misma página muestra cuánto tardó la IA. Con Player2 o un modelo rápido en la nube, una respuesta tarda de 1 a 3 segundos, y OmniVoice unos 2 segundos por frase. Un modelo que corre en tu PC comparte la tarjeta gráfica con el juego y las voces, y puede tardar mucho más; Pocket TTS en el procesador tarda unos segundos por frase. La primera frase de cada personaje es más lenta: es cuando se clona su voz.</span></li>
       <li><span lang="en">The launcher's Diagnostics page reads the logs and copies a report without keys or personal data.</span><span lang="es">La página Diagnóstico del launcher lee los logs y copia un informe sin claves ni datos personales.</span></li>
     </ul>
   </section>
@@ -492,6 +495,11 @@
 </div>
 
 <script>
+// ---- the launcher's official SHA-256, from the same manifest the launcher reads
+fetch("https://raw.githubusercontent.com/CarlosNahuelcoy/Vault-Talk/main/manifest.json").then(r => r.json()).then(m => {
+  const sha = (m.launcher && m.launcher.sha256 || "").toUpperCase();
+  if (sha) for (const id of ["exeSha", "exeSha2"]) { const el = document.getElementById(id); if (el) el.textContent = "v" + m.launcher.version + " " + sha; }
+}).catch(() => {});
 // ---- the links, in one place: change them here when the mods go up on Nexus
 const LINKS = {
   modFnv: "https://www.nexusmods.com/newvegas/mods/100670",
